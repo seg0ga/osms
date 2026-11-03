@@ -26,7 +26,7 @@
 x = 0 1 0 0 0
 y = 0 1 1 1 1
 <div align="center">
-  <img width="462" height="252" alt="image" src="https://github.com/user-attachments/assets/e31c4c99-86f1-4cc5-8a14-323987052847" />
+  <img width="693" height="378" alt="image" src="https://github.com/user-attachments/assets/e31c4c99-86f1-4cc5-8a14-323987052847" />
 </div>
 
 ``` cpp
@@ -87,7 +87,7 @@ int main() {
 2) Вывел получившуюся последовательность на экран.
 
 <div align="center">
-  <img width="413" height="243" alt="image" src="https://github.com/user-attachments/assets/1df70d52-9978-47a7-98b3-b606d29a5b84" />
+  <img width="620" height="365" alt="image" src="https://github.com/user-attachments/assets/1df70d52-9978-47a7-98b3-b606d29a5b84" />
 </div>
 
 3) Сделал поэлементный циклический сдвиг последовательности и посчитал автокорреляцию исходной последовательности и сдвинутой. Сформировал таблицу с битовыми значениями последовательностей, в последнем столбце которой вычисленное значение автокорреляции.
@@ -130,7 +130,7 @@ int main() {
 ```
 
 <div align="center">
-  <img width="501" height="186" alt="image" src="https://github.com/user-attachments/assets/ae829e2f-7fa1-4b82-88ac-65445b432c2c" />
+  <img width="752" height="279" alt="image" src="https://github.com/user-attachments/assets/ae829e2f-7fa1-4b82-88ac-65445b432c2c" />
 </div>
 
 4) Сформировал еще одну последовательность Голда, используя свою схему, такую что x=x+1, а y= у-5.
@@ -204,7 +204,7 @@ int main() {
 ```
 
 <div align="center">
-  <img width="269" height="250" alt="image" src="https://github.com/user-attachments/assets/9e20a0d3-5402-40b0-807a-3489856587da" />
+  <img width="405" height="375" alt="image" src="https://github.com/user-attachments/assets/9e20a0d3-5402-40b0-807a-3489856587da" />
 </div>
 
 5) Вычислил значение взаимной корреляции исходной и новой последовательностей и вывел в терминал.
@@ -289,7 +289,7 @@ int main() {
 }
 ```
 <div align="center">
-  <img width="501" height="404" alt="image" src="https://github.com/user-attachments/assets/fcc0f9cf-39b8-4ca7-83d5-08263462fb05" />
+  <img width="752" height="606" alt="image" src="https://github.com/user-attachments/assets/fcc0f9cf-39b8-4ca7-83d5-08263462fb05" />
 </div>
 
 6) Проделал шаги 1-5 в Matlab. Использовал функции xcorr() и autocorr() для вычисления соответствующих корреляций. Сравнил результаты, полученные в Matlab и C/C++. 
