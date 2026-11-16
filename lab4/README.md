@@ -3,21 +3,27 @@
 ## Задачи практической работы
 1) Напишите программу на языке С/С++ для генерации последовательности Голда, используя схему, изображенную на рисунке 4.4, если ваша группа с четным номером и 4.5 – если с нечетным, и порождающие полиномы x и y, при этом x – это ваш порядковый номер в журнале в двоичном формате (5 бит), а y – это x+7 (5 бит). Например, ваш номер 22, значит:
  x = 1 0 1 1 0, y = 1 1 1 0 1.
-<img width="462" height="253" alt="image" src="https://github.com/user-attachments/assets/b425f9a5-1ad1-4ec7-bd68-2f35d3c37e7a" /> <img width="462" height="251" alt="image" src="https://github.com/user-attachments/assets/25187c8e-ccca-4be6-b75c-d58bd5f23373" />
+<div align="center">
+<img width="462" height="253" alt="image" src="https://github.com/user-attachments/assets/b425f9a5-1ad1-4ec7-bd68-2f35d3c37e7a" /> 
+</div>
  
-2) Выведите получившуюся последовательность на экран.
+<div align="center"> 
+<img width="462" height="251" alt="image" src="https://github.com/user-attachments/assets/25187c8e-ccca-4be6-b75c-d58bd5f23373" />
+</div>
 
-3) Сделайте поэлементный циклический сдвиг последовательности и посчитайте автокорреляцию исходной последовательности и сдвинутой. Сформируйте таблицу с битовыми значениями последовательностей, в последнем столбце которой будет вычисленное значение автокорреляции, как показано в примере ниже.
+3) Выведите получившуюся последовательность на экран.
+
+4) Сделайте поэлементный циклический сдвиг последовательности и посчитайте автокорреляцию исходной последовательности и сдвинутой. Сформируйте таблицу с битовыми значениями последовательностей, в последнем столбце которой будет вычисленное значение автокорреляции, как показано в примере ниже.
  
-4) Сформируйте еще одну последовательность Голда, используя свою схему (рис.4.4 или 4.5), такую что x=x+1, а y= у-5.
+5) Сформируйте еще одну последовательность Голда, используя свою схему (рис.4.4 или 4.5), такую что x=x+1, а y= у-5.
 
-5) Вычислите значение взаимной корреляции исходной и новой последовательностей и выведите в терминал.
+6) Вычислите значение взаимной корреляции исходной и новой последовательностей и выведите в терминал.
 
-6) Проделайте шаги 1-5 в Matlab. Используйте функции xcorr() и autocorr() для вычисления соответствующих корреляций. Сравните результаты, полученные в Matlab и C/C++. 
+7) Проделайте шаги 1-5 в Matlab. Используйте функции xcorr() и autocorr() для вычисления соответствующих корреляций. Сравните результаты, полученные в Matlab и C/C++. 
 
-7) Выведите на график в Matlab функцию автокорреляции в зависимости от величины задержки (lag).
+8) Выведите на график в Matlab функцию автокорреляции в зависимости от величины задержки (lag).
 
-8) Составьте отчет. Отчет должен содержать титульный лист, содержание, цель и задачи работы, теоретические сведения, исходные данные, этапы выполнения работы, сопровождаемые скриншотами и графиками, демонстрирующими успешность выполнения, и промежуточными выводами, результирующими таблицами, ответы на контрольные вопросы, и заключение и ссылка в виде QR-кода на репозиторий с кодом (git).
+9) Составьте отчет. Отчет должен содержать титульный лист, содержание, цель и задачи работы, теоретические сведения, исходные данные, этапы выполнения работы, сопровождаемые скриншотами и графиками, демонстрирующими успешность выполнения, и промежуточными выводами, результирующими таблицами, ответы на контрольные вопросы, и заключение и ссылка в виде QR-кода на репозиторий с кодом (git).
 
 
 ## Результаты
@@ -294,6 +300,8 @@ int main() {
 
 6) Проделал шаги 1-5 в Matlab. Использовал функции xcorr() и autocorr() для вычисления соответствующих корреляций. Сравнил результаты, полученные в Matlab и C/C++. 
 ``` matlab
+
+
 function [mas,x,y]=gen_sequence(x,y,length)
     fprintf(" ___________________________________\n");
     fprintf("| Шаг |    X     |    Y     | Выход |\n");
@@ -326,7 +334,29 @@ function [mas,x,y]=gen_sequence(x,y,length)
     fprintf("|_____|__________|__________|_______|\n");
 end
 
-length=10;
+function R=correlation(a, b, lenght)
+    R=zeros(1,lenght+1);
+    shift=zeros(1,lenght);
+
+    for s=0:lenght
+        for j=1:lenght
+            shift(j)=b(mod(j-1+s,lenght)+1);
+        end
+
+        sum=0;
+        for j=1:lenght
+            if a(j)==shift(j)
+                sum=sum+1;
+            else
+                sum=sum-1;
+            end
+        end
+        R(s+1)=sum/lenght;
+    end
+end
+
+
+length=31;
 
 x =[0 1 0 0 0];
 y =[0 1 1 1 1];
@@ -347,27 +377,38 @@ fprintf("\nПоследовательность: ");
 fprintf("%d", mas2);
 fprintf("\n");
 
+
+R1=correlation(mas,mas,length);
+R2=correlation(mas2,mas2,length);
+R3=correlation(mas,mas2,length);
+R4=correlation(mas2,mas,length);
+lags2=0:length;
+lags3=0:length;
+
 fprintf("\n\nАвтокорреляция первой:\n");
-[ac,lags]=autocorr(mas,'NumLags',length-1); 
-T=table(lags(:),ac(:),'VariableNames',{'Сдвиг','Автокорреляция'});    
+[ac1,lags]=autocorr(mas,'NumLags',length-1); 
+T=table(lags(:), ac1(:), R1(1:numel(lags)).','VariableNames', {'Сдвиг','Autocorr','Моя'});
 disp(T);
 
+fprintf("\n\nАвтокорреляция второй:\n");
+[ac2,lags]=autocorr(mas2,'NumLags',length-1); 
+T=table(lags(:), ac2(:), R2(1:numel(lags)).','VariableNames', {'Сдвиг','Autocorr','Моя'});
+disp(T);
 
 fprintf("\n\nВзаимная корреляция первой от второй:\n");
 [c,lags]=xcorr(mas,mas2,'coeff');
 idx=(lags>=0)&(lags<=length);
 c_vals=c(idx);
 lags_vals=lags(idx);
-T=table(lags_vals(:),c_vals(:),'VariableNames',{'Сдвиг', 'Взаимная корреляция'});
+T=table(lags_vals(:),c_vals(:),R3(1:numel(lags_vals)).','VariableNames',{'Сдвиг', 'xcorr','Моя'});
 disp(T);
-
 
 fprintf("\n\nВзаимная корреляция второй от первой:\n");
 [c,lags]=xcorr(mas2,mas,'coeff');
 idx=(lags>=0)&(lags<=length);
 c_vals=c(idx);
 lags_vals=lags(idx);
-T=table(lags_vals(:),c_vals(:),'VariableNames',{'Сдвиг', 'Взаимная корреляция'});
+T=table(lags_vals(:),c_vals(:),R4(1:numel(lags_vals)).','VariableNames',{'Сдвиг', 'xcorr','Моя'});
 disp(T);
 ```
 <div align="center">
@@ -381,38 +422,67 @@ disp(T);
 7) Вывел на график в Matlab функцию автокорреляции в зависимости от величины задержки (lag).
 ``` matlab
 figure;
-plot(lags,ac);
-title('Автокорреляция');
+hold on;
+plot(lags3,R1,DisplayName="Моя первая")
+plot(lags3,R2,DisplayName="Моя вторая")
+title('Автокорреляции');
 xlabel('Сдвиг');
 ylabel('Значение');
+legend();
 grid on;
 
+
 figure;
-plot(lags_vals,c_vals);
+plot(lags,ac2,DisplayName="autocorr второй");
+hold on;
+plot(lags,ac1,DisplayName="autocorr первой");
+title('Автокорреляция второй');
+xlabel('Сдвиг');
+ylabel('Значение');
+legend();
+grid on;
+
+
+figure;
+plot(lags_vals,c_vals,DisplayName="xcorr");
+hold on;
+plot(lags2,R3,DisplayName="Моя")
 title('Взаимная корреляция: первая от второй');
 xlabel('Сдвиг');
+legend();
 ylabel('Значение');
 grid on;
+
 
 figure;
-plot(lags_vals,c_vals);
+plot(lags_vals,c_vals,DisplayName="xcorr");
+hold on;
+plot(lags2,R4,DisplayName="Моя")
 title('Взаимная корреляция: вторая от первой');
 xlabel('Сдвиг');
+legend();
 ylabel('Значение');
 grid on;
+
 ```
-
 <div align="center">
-  <img width="501" height="330" alt="image" src="https://github.com/user-attachments/assets/50983ec7-d8bc-4505-b2aa-e41214145042" />
+<img width="501" height="323" alt="image" src="https://github.com/user-attachments/assets/203cb8d9-69e7-4549-a6a9-6a1745b4d461" />
 </div>
 
 <div align="center">
-  <img width="501" height="325" alt="image" src="https://github.com/user-attachments/assets/83985760-0d9b-4dc0-b7d3-8343e3e96601" />
+<img width="501" height="329" alt="image" src="https://github.com/user-attachments/assets/c35bc606-e64a-4bd4-8880-85354a646e62" />
 </div>
 
 <div align="center">
-  <img width="501" height="336" alt="image" src="https://github.com/user-attachments/assets/765718bd-ac43-426f-97df-60e3e78a19c1" />
+<img width="501" height="327" alt="image" src="https://github.com/user-attachments/assets/770f8967-23cc-494e-9640-f7cb3e9b0bf8" />
 </div>
+
+<div align="center">
+<img width="501" height="343" alt="image" src="https://github.com/user-attachments/assets/71fdc499-8302-4759-89eb-46a6a73981a3" />
+</div>
+
+
+
 
 ## Заключение
 В ходе практической работы были изучены псевдослучайные двоичные последовательности и их корреляционные свойства. В C/C++ и Matlab были сгенерированы две последовательности Голда, рассчитаны их автокорреляция и взаимная корреляция, построены графики зависимости корреляции от задержки. Результаты в обеих средах совпали, что подтверждает корректность алгоритмов. Анализ показал, что автокорреляционная функция имеет острый пик при нулевом сдвиге, а взаимная корреляция остаётся низкой - именно эти свойства обеспечивают возможность синхронизации приёмника и передатчика в сетях мобильной связи. Цель работы достигнута, все задачи выполнены.
