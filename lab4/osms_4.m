@@ -1,3 +1,5 @@
+
+
 function [mas,x,y]=gen_sequence(x,y,length)
     fprintf(" ___________________________________\n");
     fprintf("| Шаг |    X     |    Y     | Выход |\n");
@@ -52,7 +54,7 @@ function R=correlation(a, b, lenght)
 end
 
 
-length=10;
+length=31;
 
 x =[0 1 0 0 0];
 y =[0 1 1 1 1];
@@ -82,35 +84,31 @@ lags2=0:length;
 lags3=0:length;
 
 fprintf("\n\nАвтокорреляция первой:\n");
-[ac,lags]=autocorr(mas,'NumLags',length-1); 
-T=table(lags(:), ac(:), R1(1:numel(lags)).','VariableNames', {'Сдвиг','Autocorr','Моя'});
+[ac1,lags]=autocorr(mas,'NumLags',length-1); 
+T=table(lags(:), ac1(:), R1(1:numel(lags)).','VariableNames', {'Сдвиг','Autocorr','Моя'});
 disp(T);
 
 fprintf("\n\nАвтокорреляция второй:\n");
-[ac,lags]=autocorr(mas,'NumLags',length-1); 
-T=table(lags(:), ac(:), R2(1:numel(lags)).','VariableNames', {'Сдвиг','Autocorr','Моя'});
+[ac2,lags]=autocorr(mas2,'NumLags',length-1); 
+T=table(lags(:), ac2(:), R2(1:numel(lags)).','VariableNames', {'Сдвиг','Autocorr','Моя'});
 disp(T);
 
 
 figure;
-plot(lags,ac,DisplayName="autocorr");
 hold on;
-plot(lags3,R1,DisplayName="Моя")
-title('Автокорреляция первой');
+plot(lags3,R1,DisplayName="Моя первая")
+plot(lags3,R2,DisplayName="Моя вторая")
+title('Автокорреляции');
 xlabel('Сдвиг');
 ylabel('Значение');
 legend();
 grid on;
 
 
-
-
-[ac,lags]=autocorr(mas2,'NumLags',length-1); 
-
 figure;
-plot(lags,ac,DisplayName="autocorr");
+plot(lags,ac2,DisplayName="autocorr второй");
 hold on;
-plot(lags3,R2,DisplayName="Моя")
+plot(lags,ac1,DisplayName="autocorr первой");
 title('Автокорреляция второй');
 xlabel('Сдвиг');
 ylabel('Значение');
@@ -152,4 +150,44 @@ title('Взаимная корреляция: вторая от первой');
 xlabel('Сдвиг');
 legend();
 ylabel('Значение');
+grid on;
+
+
+sigma=0.5;
+sigma2=0.9;
+
+
+
+noise=sigma*randn(1,length);
+noise2=sigma2*randn(1,length);
+mas2_n=mas2+noise;
+mas2_n2=mas2+noise2;
+[Rn,lags8]=xcorr(mas2,mas2_n,"coeff");
+[Rn2,lags82]=xcorr(mas2,mas2_n2,"coeff");
+
+idx=(lags>=0)&(lags<=length);
+idx2=(lags>=0)&(lags<=length);
+
+Rn_v=Rn(idx);
+Lags_v=lags8(idx);
+Rn_v2=Rn2(idx2);
+Lags_v2=lags82(idx2);
+
+
+figure();
+stem(1:length, mas2, 'filled', DisplayName="исходная");
+hold on;
+stem(1:length,mas2_n, 'filled',DisplayName="зашумленная")
+stem(1:length, mas2_n2, 'filled', DisplayName="зашумленная 2");
+legend();
+grid on;
+
+
+figure();
+plot(Lags_v,Rn_v,"--",DisplayName="шум 1")
+hold on;
+plot(Lags_v2,Rn_v2,"--",DisplayName="шум 2")
+xlabel("Сдвиг")
+legend();
+ylabel("Знач")
 grid on;
